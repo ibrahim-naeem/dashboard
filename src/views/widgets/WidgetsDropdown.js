@@ -13,7 +13,12 @@ import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
 
-const WidgetsDropdown = () => {
+/* eslint-disable react/prop-types */
+const WidgetsDropdown = ({ data }) => {
+  /* eslint-disable react/prop-types */
+  const assessments = data?.assessments?.length
+  const spaces = data?.spaces?.length
+
   return (
     <CRow>
       <CCol sm={6} lg={3}>
@@ -22,10 +27,10 @@ const WidgetsDropdown = () => {
           color="primary"
           value={
             <>
-              26K{' '}
-              <span className="fs-6 fw-normal">
+              85
+              {/* <span className="fs-6 fw-normal">
                 (-12.4% <CIcon icon={cilArrowBottom} />)
-              </span>
+              </span> */}
             </>
           }
           title="Users"
@@ -50,11 +55,11 @@ const WidgetsDropdown = () => {
                 labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
                 datasets: [
                   {
-                    label: 'My First dataset',
+                    label: 'Users',
                     backgroundColor: 'transparent',
                     borderColor: 'rgba(255,255,255,.55)',
                     pointBackgroundColor: getStyle('--cui-primary'),
-                    data: [65, 59, 84, 84, 51, 55, 40],
+                    data: [40, 45, 50, 55, 65, 75, 85],
                   },
                 ],
               }}
@@ -109,13 +114,13 @@ const WidgetsDropdown = () => {
           color="info"
           value={
             <>
-              $6.200{' '}
-              <span className="fs-6 fw-normal">
+              {assessments}
+              {/* <span className="fs-6 fw-normal">
                 (40.9% <CIcon icon={cilArrowTop} />)
-              </span>
+              </span> */}
             </>
           }
-          title="Income"
+          title="Assessment's"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">
@@ -137,11 +142,11 @@ const WidgetsDropdown = () => {
                 labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
                 datasets: [
                   {
-                    label: 'My First dataset',
+                    label: "Assessment's",
                     backgroundColor: 'transparent',
                     borderColor: 'rgba(255,255,255,.55)',
                     pointBackgroundColor: getStyle('--cui-info'),
-                    data: [1, 18, 9, 17, 34, 22, 11],
+                    data: [5, 10, 15, 20, 25, 30, 35],
                   },
                 ],
               }}
@@ -195,13 +200,13 @@ const WidgetsDropdown = () => {
           color="warning"
           value={
             <>
-              2.49{' '}
-              <span className="fs-6 fw-normal">
+              {spaces}
+              {/* <span className="fs-6 fw-normal">
                 (84.7% <CIcon icon={cilArrowTop} />)
-              </span>
+              </span> */}
             </>
           }
-          title="Conversion Rate"
+          title="Spaces"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">
@@ -220,13 +225,13 @@ const WidgetsDropdown = () => {
               className="mt-3"
               style={{ height: '70px' }}
               data={{
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                labels: ['January', 'March', 'July'],
                 datasets: [
                   {
-                    label: 'My First dataset',
+                    label: "Building's, Region, Campus",
                     backgroundColor: 'rgba(255,255,255,.2)',
                     borderColor: 'rgba(255,255,255,.55)',
-                    data: [78, 81, 80, 45, 34, 12, 40],
+                    data: [1, 2, 3],
                     fill: true,
                   },
                 ],
@@ -268,13 +273,13 @@ const WidgetsDropdown = () => {
           color="danger"
           value={
             <>
-              44K{' '}
-              <span className="fs-6 fw-normal">
+              3
+              {/* <span className="fs-6 fw-normal">
                 (-23.6% <CIcon icon={cilArrowBottom} />)
-              </span>
+              </span> */}
             </>
           }
-          title="Sessions"
+          title="Assets"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">
@@ -293,30 +298,13 @@ const WidgetsDropdown = () => {
               className="mt-3 mx-3"
               style={{ height: '70px' }}
               data={{
-                labels: [
-                  'January',
-                  'February',
-                  'March',
-                  'April',
-                  'May',
-                  'June',
-                  'July',
-                  'August',
-                  'September',
-                  'October',
-                  'November',
-                  'December',
-                  'January',
-                  'February',
-                  'March',
-                  'April',
-                ],
+                labels: ['January', 'February', 'March'],
                 datasets: [
                   {
-                    label: 'My First dataset',
+                    label: "Video's, Audio's, Note's",
                     backgroundColor: 'rgba(255,255,255,.2)',
                     borderColor: 'rgba(255,255,255,.55)',
-                    data: [78, 81, 80, 45, 34, 12, 40, 85, 65, 23, 12, 98, 34, 84, 67, 82],
+                    data: [3, 3, 3],
                     barPercentage: 0.6,
                   },
                 ],
