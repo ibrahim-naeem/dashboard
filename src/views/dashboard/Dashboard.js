@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react'
 
 import {
@@ -50,12 +51,13 @@ import avatar3 from 'src/assets/images/avatars/3.jpg'
 import avatar4 from 'src/assets/images/avatars/4.jpg'
 import avatar5 from 'src/assets/images/avatars/5.jpg'
 import avatar6 from 'src/assets/images/avatars/6.jpg'
-
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
-
+import { fetchData } from '../../firebaseUtils'
 const Dashboard = () => {
   const [result, setResult] = useState([])
+  const [surveys, setSurveys] = useState([]); // State to hold the surveys data
+  const [loading, setLoading] = useState(true); 
 
   const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 
@@ -169,26 +171,82 @@ const Dashboard = () => {
     },
   ]
 
-  const ENDPOINT_URL = 'http://52.90.116.22:8080/sync/2023-08-20 17:13:58'
-  const TOKEN =
-    'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkyNTM4NjQ0LCJleHAiOjE3MjQwNzQ2NDQsImF1ZCI6InVzZXIiLCJpc3MiOiJibHVwcmludC12eCIsInN1YiI6IkFzc2Vzc21lbnRzIn0.RDMwQS_PrJP5UkgFivuDNfdB7PHwiOkGVZYHVxWU43U3ML8VybdwnYiVg5OQy7qvkCY5nuI1eSn0n2oaGMd0W3JHKP7iziKRvr1LFj5o1vnvqSX7tqAlMDVNF-NGBR3_jWGC2tz6sdavZB9K6fwrbaD02wwTKj4NgV6vmmMm-VY-0NUKihGF4caGQDFavL1I3FSo-0PkXpdpoLJWyLsJLGWduXvmsiX3R8itj3lCYsau5amFXbvKemsrd1mmXRbTeAjUm2JZZ2RU9KRUq5bq7Ih5AfWKnnm-YrwG-dPVo26hdT_ZKtNBQN31W1Frb44VZ3IfyRX5oDmKg33TZoTEBg'
   useEffect(() => {
-    const getAssessments = async () => {
-      const res = await fetch(`${ENDPOINT_URL}`, {
-        headers: {
-          Authorization: TOKEN,
-        },
-      })
-      const data = await res.json(res)
-      setResult(data)
-      console.log(result)
-    }
-    getAssessments()
-  }, [])
-  console.log(result)
+    const loadData = async () => {
+      try {
+        const data = await fetchData('surveys');
+        setSurveys(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching surveys:', error);
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading surveys...</div>;
+  }
+  
+
   return (
     <>
-      <WidgetsDropdown data={result} />
+    <CRow>
+        <CCol xs>
+          <CCard className="mb-4">
+            {/* xeadereader> */}
+            {/* <CCardBody> */}
+            <CTable align="middle" className="mb-0 border" hover responsive>
+              <CTableHead color="light">
+                <CTableRow>
+                  <CTableHeaderCell>Assessment name</CTableHeaderCell>
+                  <CTableHeaderCell className="text-center">Type</CTableHeaderCell>
+                  <CTableHeaderCell>Location</CTableHeaderCell>
+                  <CTableHeaderCell>Created at</CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+                {surveys.map((survey, index) => (
+                  <CTableRow v-for="item in tableItems" key={index}>
+                    <CTableDataCell>
+                      <div>{survey?.name}</div>
+                      {/* <div className="small text-medium-emphasis">
+                        <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
+                        {item.user.registered}
+                      </div> */}
+                    </CTableDataCell>
+                    <CTableDataCell className="text-center">
+                      {/* <CIcon size="xl" icon={item.country.name} title={item.country.name} /> */}
+                      <div>{survey?.type || 'Not Available'}</div>
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <div className="clearfix">
+                        <div className="float-start">
+                          <strong>VX HQ ISL</strong>
+                        </div>
+                        <div className="float-end">
+                          {/* <small className="text-medium-emphasis">{item.usage.period}</small> */}
+                        </div>
+                      </div>
+                      {/* <CProgress thin color={item.usage.color} value={item.usage.value} /> */}
+                    </CTableDataCell>
+
+                    <CTableDataCell>
+                      <div className="small text-medium-emphasis"></div>
+                      {survey?.createdAt || 'Not Available'}
+                    </CTableDataCell>
+                  </CTableRow>
+                ))}
+              </CTableBody>
+            </CTable>
+            {/* </CCardBody> */}
+          </CCard>
+        </CCol>
+      </CRow>
+      
+      <WidgetsDropdown data={surveys} />
       <CCard className="mb-4">
         <CCardBody>
           <CRow>
@@ -419,59 +477,6 @@ const Dashboard = () => {
                 </CCol>
               </CRow>
             </CCardBody>
-          </CCard>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs>
-          <CCard className="mb-4">
-            {/* xeadereader> */}
-            {/* <CCardBody> */}
-            <CTable align="middle" className="mb-0 border" hover responsive>
-              <CTableHead color="light">
-                <CTableRow>
-                  <CTableHeaderCell>Assessment name</CTableHeaderCell>
-                  <CTableHeaderCell className="text-center">Type</CTableHeaderCell>
-                  <CTableHeaderCell>Location</CTableHeaderCell>
-                  <CTableHeaderCell>Created at</CTableHeaderCell>
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                {console.log('------', result)}
-                {result?.assessments?.map((assessment, index) => (
-                  <CTableRow v-for="item in tableItems" key={index}>
-                    <CTableDataCell>
-                      <div>{assessment?.name}</div>
-                      {/* <div className="small text-medium-emphasis">
-                        <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
-                        {item.user.registered}
-                      </div> */}
-                    </CTableDataCell>
-                    <CTableDataCell className="text-center">
-                      {/* <CIcon size="xl" icon={item.country.name} title={item.country.name} /> */}
-                      <div>{assessment.type}</div>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <div className="clearfix">
-                        <div className="float-start">
-                          <strong>VX HQ ISL</strong>
-                        </div>
-                        <div className="float-end">
-                          {/* <small className="text-medium-emphasis">{item.usage.period}</small> */}
-                        </div>
-                      </div>
-                      {/* <CProgress thin color={item.usage.color} value={item.usage.value} /> */}
-                    </CTableDataCell>
-
-                    <CTableDataCell>
-                      <div className="small text-medium-emphasis"></div>
-                      {assessment?.createdAtApp}
-                    </CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-            {/* </CCardBody> */}
           </CCard>
         </CCol>
       </CRow>

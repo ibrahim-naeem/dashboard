@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react'
 import {
   CRow,
@@ -16,8 +17,8 @@ import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
 /* eslint-disable react/prop-types */
 const WidgetsDropdown = ({ data }) => {
   /* eslint-disable react/prop-types */
-  const assessments = data?.assessments?.length
-  const spaces = data?.spaces?.length
+  const assessments = data?.length || 12
+  const spaces = data?.spaces?.length || 11
 
   return (
     <CRow>
